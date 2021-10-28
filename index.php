@@ -7,12 +7,10 @@
 
 <body>
     <form action="insert.php" method="POST">
-        <input type="hidden" name="checkbox" value="false">
-        <input type="checkbox" name="checkbox" value="true">
-        <label for="name">naam:</label>
-        <input type="text" id="name" name="name">
-        <label for="number">Integer waarde:</label>
-        <input type="number" id="number" name="number">
+        <label for="temperature">naam:</label>
+        <input type="text" id="temperature" name="temperature">
+        <label for="Humidity">Humidity:</label>
+        <input type="number" id="Humdity" name="Humidity">
         <input type="submit">
     </form>
 </body>
