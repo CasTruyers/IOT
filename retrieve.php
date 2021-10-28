@@ -1,3 +1,7 @@
+<?php
+include_once 'includes/include.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,7 +13,10 @@
 </head>
 
 <body>
-    retrieve Work In Progress
+    <?php
+    $sql = "SELECT * FROM "
+
+    ?>
 </body>
 
 </html>
