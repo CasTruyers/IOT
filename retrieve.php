@@ -14,7 +14,15 @@ include_once 'includes/include.php';
 
 <body>
     <?php
-    $sql = "SELECT * FROM "
+    $sql = "SELECT * FROM samples;";
+    $result = mysqli_query($conn, $sql);
+    $resultCheck = mysqli_num_rows($result);
+
+    if ($resultCheck > 0) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            echo $row['sample_value'] . "<br>";
+        }
+    }
 
     ?>
 </body>
