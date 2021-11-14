@@ -1,14 +1,21 @@
-<?php
-include_once 'includes/include.php';
+<!DOCTYPE html>
 
-$value = $_POST["value"];
-$sensor_id = $_POST["sensor_id"];
+<head>
+    <meta charset="UTF-8">
+    <title>insertData</title>
+</head>
 
-$sql = "INSERT INTO samples(sample_value, sample_sensor_id) VALUES($value, $sensor_id);";
-$result = mysqli_query($conn, $sql);
+<body>
+    <form action="includes/processInsert.php" method="POST">
+        <label for="value">Value:</label>
+        <input type="text" id="value" name="value">
+        <br>
+        <input type="radio" id="Temperature" name="sensor_id" value=1>
+        <label for="temperature">Temperature</label><br>
+        <input type="radio" id="humidity" name="sensor_id" value=2>
+        <label for="humidity">Humidity</label><br>
+        <input type="submit">
+    </form>
+</body>
 
-if ($result) {
-    echo "Inserting succes";
-} else {
-    echo "Inserting failure";
-}
+</html>

@@ -1,21 +1,26 @@
 <!DOCTYPE html>
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <title>insertData</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='stylesheet' type='text/css' media='screen' href=' ../../index/stylesheet.css'>
+    <link rel="icon" href=" ../../index/indexIcon.png">
+    <title>Project</title>
 </head>
 
 <body>
-    <form action="insert.php" method="POST">
-        <label for="value">Value:</label>
-        <input type="text" id="value" name="value">
-        <br>
-        <input type="radio" id="Temperature" name="sensor_id" value=1>
-        <label for="temperature">Temperature</label><br>
-        <input type="radio" id="humidity" name="sensor_id" value=2>
-        <label for="humidity">Humidity</label><br>
-        <input type="submit">
-    </form>
+    <div id="container">
+
+        <h3 id="header">navigator</h3>
+        <hr id="line">
+
+        <ul>
+            <li id="insert"><a href="insert.php">insert</a></li>
+            <li id="retrieve"><a href="retrieve.php">retrieve</a></li>
+        </ul>
+    </div>
 </body>
 
 </html>

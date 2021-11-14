@@ -14,7 +14,7 @@ include_once 'includes/include.php';
 
 <body>
     <?php
-    $sql = "SELECT * FROM samples;";
+    $sql = "SELECT * FROM samples JOIN sensors ON sensor_id = sample_sensor_id;";
     $result = mysqli_query($conn, $sql);
     $resultCheck = mysqli_num_rows($result);
 
