@@ -1,5 +1,5 @@
 <?php
-include_once 'includes/include.php';
+include_once 'includes/connect.php';
 ?>
 
 <!DOCTYPE html>

@@ -1,5 +1,5 @@
 <?php
-include_once 'includes/include.php';
+include_once 'connect.php';
 
 $value = $_POST["value"];
 $sensor_id = $_POST["sensor_id"];

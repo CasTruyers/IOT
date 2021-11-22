@@ -6,7 +6,7 @@
 </head>
 
 <body>
-    <form action="includes/processInsert.php" method="POST">
+    <form action="includes/inserting.php" method="POST">
         <label for="value">Value:</label>
         <input type="text" id="value" name="value">
         <br>
