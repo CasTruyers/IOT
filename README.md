@@ -19,6 +19,6 @@
 - https://www.youtube.com/watch?v=a7_WFUlFS94
 
 ### javaScript:
-
+- https://www.youtube.com/watch?v=LFa9fnQGb3g&ab_channel=blondiebytes
 - https://www.youtube.com/watch?v=yGnjK8dqhjk&ab_channel=CurlyBrackets
 
