@@ -14,7 +14,9 @@
 - https://www.youtube.com/watch?v=HXV3zeQKqGY&t=8499s
 
 ### PHP:
+- https://www.youtube.com/watch?v=SNcMF_-4M4A&ab_channel=LampCamp
 - https://www.youtube.com/watch?v=qVU3V0A05k8&list=PL0eyrZgxdwhwBToawjm9faF1ixePexft-
+- https://www.youtube.com/watch?v=a7_WFUlFS94
 
 ### javaScript:
 
