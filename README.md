@@ -1,10 +1,12 @@
 # IOT
 
-## webApp:
+## APPLICATION:
 
 - http://12001510.pxl-ea-ict.be/IOT/index.php
 
-## sources:
+## DESCRIPTION
+
+## SOURCES:
 
 ### SQL:
 - https://www.youtube.com/watch?v=fXpjwSFgoV0
