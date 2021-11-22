@@ -14,7 +14,6 @@
 - https://www.youtube.com/watch?v=HXV3zeQKqGY&t=8499s
 
 ### PHP:
-- https://www.youtube.com/watch?v=yGnjK8dqhjk&ab_channel=CurlyBrackets
 - https://www.youtube.com/watch?v=qVU3V0A05k8&list=PL0eyrZgxdwhwBToawjm9faF1ixePexft-
 
 ### javaScript:
