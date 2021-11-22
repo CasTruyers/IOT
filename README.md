@@ -11,6 +11,9 @@ dazbdiuazojda
 
 ## SOURCES:
 
+### CSS:
+- https://www.youtube.com/watch?v=fYq5PXgSsbE&ab_channel=WebDevSimplified
+
 ### SQL:
 - https://www.youtube.com/watch?v=fXpjwSFgoV0
 - https://www.youtube.com/watch?v=Bn-nTzkhEpQ
