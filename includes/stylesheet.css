@@ -1,9 +1,39 @@
 body {
   background-color: beige;
+  color: olive;
 }
 
-#inputTable {
+.flexContainer {
+  /*border: black 2px solid;*/
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.form {
+  /*border: black 2px solid;*/
   font-family: "calistoga";
-  font-size: 25px;
-  color: olive;
+  font-size: 15px;
+}
+
+button {
+  display: block;
+  margin: auto;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+td {
+  border: black 2px solid;
+  padding: 6px;
+  font-weight: bold;
+}
+
+th {
+  border: black 2px solid;
+  padding: 6px;
+  font-weight: bold;
 }
