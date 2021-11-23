@@ -26,6 +26,7 @@ table {
   border-collapse: collapse;
   width: 100%;
 }
+
 td {
   border: black 2px solid;
   padding: 6px;
@@ -36,4 +37,5 @@ th {
   border: black 2px solid;
   padding: 6px;
   font-weight: bold;
+  font-size: 20px;
 }
