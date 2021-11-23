@@ -2,12 +2,18 @@
 
 ## APPLICATION:
 
-- http://12001510.pxl-ea-ict.be/IOT/index.php
+- http://12001510.pxl-ea-ict.be/IOT/project/index.php
 
 ## DESCRIPTION
 
 blbllblniaznkzakpdibehizyoieuoajzdjz
 dazbdiuazojda
+
+## TO-DO
+- flexbox
+- back button
+- inserting data -> auto close page
+- dataSort
 
 ## SOURCES:
 
