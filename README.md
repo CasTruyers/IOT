@@ -10,6 +10,7 @@ blbllblniaznkzakpdibehizyoieuoajzdjz
 dazbdiuazojda
 
 ## TO-DO
+- connect hardware
 - flexbox
 - back button
 - inserting data -> auto close page
