@@ -7,19 +7,21 @@ include_once 'includes/connect.php';
 
 <head>
     <meta charset="UTF-8">
+    <title>retrieve</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="includes/stylesheet.css">
     <script src="includes/javascript.js"></script>
-    <title>retrieve</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 </head>
 
 <body>
-    <div class="Adjust">
-        <label for="darkmode">Activate DarkMode</label>
+    <div id="Adjust">
+        <label for="darkmode">DarkMode</label>
         <input type="checkbox" id="darkmode" name="darkmode" onclick="darkMode()">
+        <button class="button">UPDATE</button>
     </div>
-    <div class="Table">
+    <div id="Table">
         <table>
             <tr>
                 <th>type</th>
@@ -48,5 +50,13 @@ include_once 'includes/connect.php';
         </table>
     </div>
 </body>
+
+<script>
+    $(document).ready(function() {
+        $("button").click(function() {
+            $("#Table").load("includes/loadPHP.php")
+        })
+    })
+</script>
 
 </html>

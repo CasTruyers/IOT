@@ -4,15 +4,14 @@ function darkMode()
 
     if(checkbox.checked)
     {
-        console.log("checked");
+        console.log("dark mode activated");
         document.body.style.backgroundColor = '#121212';
         document.body.style.color = '#857F72';
     } 
     else
     {
-        console.log("not checked");
+        console.log("dark mode de-activated");
         document.body.style.backgroundColor = 'beige';
         document.body.style.color = 'olive';
     } 
-        
 }

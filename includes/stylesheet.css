@@ -3,7 +3,7 @@ body {
   color: olive;
 }
 
-.flexContainer {
+.container {
   /*border: black 2px solid;*/
   display: flex;
   justify-content: center;

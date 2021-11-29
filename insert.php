@@ -7,11 +7,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Calistoga&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="includes/stylesheet.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
     <title>insertData</title>
 </head>
 
 <body>
-    <div class="flexContainer">
+    <div class="container">
         <form action="includes/inserting.php" method="POST" class="form">
             <input type="text" class="value" name="value" placeholder="Value">
             <br>
