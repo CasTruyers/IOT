@@ -5,10 +5,12 @@
 # DESCRIPTION
 ## EMBEDDED DEVICE
 ### PSoC 6 WiFi-BT Pioneer Kit
-- PSoC 6 MCU
-- 2.4-GHz WLAN and Bluetooth functionality 
 
 ![Psoc6Picture](mdPictures/psoc6Pic.png)
+35: programmer and debugger
+3: USB Type-C programming connector
+31: Cypress PSoC 6 
+26: 2.4-GHz WLAN and Bluetooth functionality (LBEE5KL 1DX, U6)
 
 ### SENSOREN
 
