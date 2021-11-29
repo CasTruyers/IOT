@@ -1,13 +1,22 @@
-# IOT
+# IoT
+
+*Data is collected using an embedded device connected to the IoT. This data is forwarded to a mySQL database. A web application collects the data from the database and presents it.*
+
+# DESCRIPTION
+## EMBEDDED DEVICE
+### PSoC 6 WiFi-BT Pioneer Kit
+- PSoC 6 MCU
+- 2.4-GHz WLAN and Bluetooth functionality 
+
+![Psoc6Picture]()
+
+### SENSOREN
+
+
 
 ## APPLICATION:
 
 - http://12001510.pxl-ea-ict.be/IOT/project/index.php
-
-## DESCRIPTION
-
-blbllblniaznkzakpdibehizyoieuoajzdjz
-dazbdiuazojda
 
 ## TO-DO
 - flexbox
