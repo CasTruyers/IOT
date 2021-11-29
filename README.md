@@ -1,6 +1,6 @@
 # IoT
 
-*Data is collected using an embedded device connected to the IoT. This data is forwarded to a mySQL database. A web application collects the data from the database and presents it.*
+**Data is collected using an embedded device connected to the IoT. This data is forwarded to a mySQL database. A web application collects the data from the database and presents it.**
 
 # DESCRIPTION
 ## EMBEDDED DEVICE
@@ -8,7 +8,7 @@
 - PSoC 6 MCU
 - 2.4-GHz WLAN and Bluetooth functionality 
 
-![Psoc6Picture]()
+![Psoc6Picture](mdPictures/psoc6.png)
 
 ### SENSOREN
 
