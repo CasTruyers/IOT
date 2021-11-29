@@ -2,7 +2,6 @@
 
 **Data is collected using an embedded device connected to the IoT. This data is forwarded to a mySQL database. A web application collects the data from the database and presents it.**
 
-# DESCRIPTION
 ## EMBEDDED DEVICE
 ### PSoC 6 WiFi-BT Pioneer Kit
 
