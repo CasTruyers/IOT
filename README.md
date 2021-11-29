@@ -11,7 +11,7 @@
 - 31: Cypress PSoC 6 
 - 26: 2.4-GHz WLAN and Bluetooth functionality (LBEE5KL 1DX, U6)
 
-### SENSOREN
+### SENSOR
 DHT11 sensor is used for measuring temperature and humidity. They are made of two parts, a capacitive humidity sensor and a thermistor. There is also a very basic chip inside that does some analog to digital conversion and spits out a digital signal with the temperature and humidity. Using bitbanging to read the values.
 
 ![Psoc6Picture](mdPictures/DHT11.png)
