@@ -8,7 +8,7 @@
 - PSoC 6 MCU
 - 2.4-GHz WLAN and Bluetooth functionality 
 
-![Psoc6Picture](mdPictures/psoc6.png)
+![Psoc6Picture](mdPictures/psoc6Pic.png)
 
 ### SENSOREN
 
