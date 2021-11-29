@@ -1,3 +1,9 @@
+$(document).ready(function() {
+    $("button").click(function() {
+        $("#Table").load("includes/loadPHP.php")
+    })
+})
+
 function darkMode()
 {
     let checkbox = document.getElementById("darkmode");
