@@ -19,7 +19,7 @@ DHT11 sensor is used for measuring temperature and humidity. They are made of tw
 - Good for 20-80% humidity readings with 5% accuracy
 - Good for 0-50°C temperature readings ±2°C accuracy
 - No more than 1 Hz sampling rate (once every second)
-- datasheet: https://www.mouser.com/datasheet/2/758/DHT11-Technical-Data-Sheet-Translated-Version-1143054.pdf
+- click [here](https://www.mouser.com/datasheet/2/758/DHT11-Technical-Data-Sheet-Translated-Version-1143054.pdf) for the datasheet
 
 ## APPLICATION:
 
