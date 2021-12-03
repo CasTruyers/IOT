@@ -17,3 +17,5 @@ Uit intresse heb ik geprobeerd naar een andere server te POSTen, namelijk httpbi
 *Hier zie je links mijn code (slechts een deel) en rechts kan je de UART volgen. (Zie mijn server response in UART van httpbin.org/anything)*
 
 ![BewijsFoto](bewijs.png)
+
+*Wireshark was eigenlijk een beetje voor de show in deze foto*
