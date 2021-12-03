@@ -10,7 +10,7 @@ Ik krijg mijn cy_http_client_send() functie maar niet succesvol.
 
 Uit intresse heb ik geprobeerd naar een andere server te POSTen, namelijk httpbin.org/anything (returned mijn hele request terug)
 
-**Dit lukt wel dus ligt niet aan de code, ofja mischien wel maar wil gewoon zeggen dat ik al HTTP requests kan sturen.
+**Dit lukt wel dus ligt niet aan de code, ofja mischien wel maar wil gewoon zeggen dat ik al HTTP requests kan sturen.**
 
 **proof**
 
