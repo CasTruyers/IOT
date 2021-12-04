@@ -12,6 +12,11 @@ Uit intresse heb ik geprobeerd naar een andere server te POSTen, namelijk httpbi
 
 **Dit lukt wel dus ligt niet aan de code, ofja mischien wel maar wil gewoon zeggen dat ik al HTTP requests kan sturen.**
 
+Ik vermoed dat dit mischien kan liggen aan een bepaalde header die ik moet mee geven om toegang te krijgen. 
+
+mss pxl-ea-ict.be als host en 12001510 als header iets.
+
+
 **proof**
 
 *Hier zie je links mijn code (slechts een deel) en rechts kan je de UART volgen. (Zie mijn server response in UART van httpbin.org/anything)*
@@ -19,7 +24,3 @@ Uit intresse heb ik geprobeerd naar een andere server te POSTen, namelijk httpbi
 ![BewijsFoto](bewijs.png)
 
 *Wireshark was eigenlijk een beetje voor de show in deze foto aangezien ik de packets niet kon terugvinden hier?*
-
-Ik vermoed dat dit mischien kan liggen aan een bepaalde header die ik moet mee geven om toegang te krijgen. 
-
-mss pxl-ea-ict.be als host en 12001510 als header iets.
