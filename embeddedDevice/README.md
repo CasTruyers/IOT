@@ -19,3 +19,7 @@ Uit intresse heb ik geprobeerd naar een andere server te POSTen, namelijk httpbi
 ![BewijsFoto](bewijs.png)
 
 *Wireshark was eigenlijk een beetje voor de show in deze foto*
+
+Ik vermoed dat dit mischien kan liggen aan een bepaalde header die ik moet mee geven om toegang te krijgen. 
+
+mss pxl-ea-ict.be als host en 12001510 als header iets.
