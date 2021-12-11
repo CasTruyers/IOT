@@ -55,3 +55,4 @@ DHT11 sensor is used for measuring temperature and humidity. They are made of tw
 
 ### Chart.js
 - https://www.youtube.com/watch?v=fqARSwfsV9w&ab_channel=DevEd
+- https://www.youtube.com/watch?v=cREXtrFiJBc&ab_channel=Madsycode
