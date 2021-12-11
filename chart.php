@@ -68,7 +68,7 @@ $humi = trim($humi, ",");
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 80vh;
+            height: 100vh;
         }
     </style>
 
