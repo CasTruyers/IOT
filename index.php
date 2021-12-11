@@ -18,7 +18,8 @@
 
         <ul>
             <li id="insert"><a href="insert.php">insert</a></li>
-            <li id="retrieve"><a href="retrieve.php">retrieve</a></li>
+            <li id="table"><a href="table.php">table</a></li>
+            <li id="chart"><a href="chart.php">chart</a></li>
         </ul>
     </div>
 </body>
