@@ -43,14 +43,14 @@ $humi = trim($humi, ",");
                 data: {
                     labels: [1, 2, 3, 4, 5, 6],
                     datasets: [{
-                            label: 'Temp',
+                            label: 'Temperature [°C]',
                             data: [<?php echo $temp; ?>],
                             backgroundColor: 'transparent',
                             borderColor: 'rgba(255, 0, 0)',
                             borderWidth: 3
                         },
                         {
-                            label: 'Humi',
+                            label: 'Humidity [%]',
                             data: [<?php echo $humi; ?>],
                             backgroundColor: 'transparent',
                             borderColor: 'rgba(0, 255, 0)',
@@ -68,7 +68,7 @@ $humi = trim($humi, ",");
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 100vh;
+            height: 80vh;
         }
     </style>
 
