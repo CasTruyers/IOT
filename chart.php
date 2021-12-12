@@ -5,6 +5,7 @@ include_once 'includes/connect.php';
 
 $humi = '';
 $temp = '';
+$timeLabel = '';
 
 $sql = "SELECT * FROM samples JOIN sensors ON sensor_id = sample_sensor_id;";
 $result = mysqli_query($conn, $sql);
@@ -12,11 +13,15 @@ $resultCheck = mysqli_num_rows($result);
 
 if ($resultCheck > 0) {
     while ($row = mysqli_fetch_assoc($result)) {
-        if ($row["sensor_id"] == 1)
+        if ($row["sensor_id"] == 1) {
             $temp = $temp . '"' . $row["sample_value"] . '",';
-        else if ($row["sensor_id"] == 2)
+            $humi = $humi . '"NULL",';
+            $timeLabel = $timeLabel . '"' . $row["sample_date"] . '",';
+        } else if ($row["sensor_id"] == 2) {
             $humi = $humi . '"' . $row["sample_value"] . '",';
-        else
+            $temp = $temp . '"NULL",';
+            $timeLabel = $timeLabel . '"' . $row["sample_date"] . '",';
+        } else
             log("sensor id != 1 or 2");
     }
 } else
@@ -24,6 +29,7 @@ if ($resultCheck > 0) {
 
 $temp = trim($temp, ",");
 $humi = trim($humi, ",");
+$timeLabel = trim($timeLabel, ",");
 ?>
 
 <head>
@@ -41,24 +47,26 @@ $humi = trim($humi, ",");
             document.getElementById('myChart'), {
                 type: 'line',
                 data: {
-                    labels: [1, 2, 3, 4, 5, 6],
+                    labels: [<?php echo $timeLabel; ?>],
                     datasets: [{
                             label: 'Temperature [°C]',
                             data: [<?php echo $temp; ?>],
                             backgroundColor: 'transparent',
                             borderColor: 'rgba(255, 0, 0)',
-                            borderWidth: 3
+                            borderWidth: 1
                         },
                         {
                             label: 'Humidity [%]',
                             data: [<?php echo $humi; ?>],
                             backgroundColor: 'transparent',
                             borderColor: 'rgba(0, 255, 0)',
-                            borderWidth: 3
+                            borderWidth: 1
                         }
                     ]
                 },
-                options: {}
+                options: {
+                    spanGaps: true
+                }
             }
         );
     </script>
