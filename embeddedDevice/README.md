@@ -1,0 +1,1 @@
+- there should also be a wifi_config.h file, but it has my password in it so yea not sharing that shi
