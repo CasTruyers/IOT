@@ -38,6 +38,8 @@ Temperature can be sent using "SW2" button on the psoc. Also humidity can be sen
 
 ## setup:
 
+**on the left is the PSOC, in the middle the DHT11 sensor/chip and on the right the developer board for external button.
+
 ![setupPicture](mdPictures/setup.jpg)
 
 ## TO-DO
