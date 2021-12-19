@@ -18,12 +18,13 @@ void softwareTimer(void *arg)
 {
     for (;;)
     {
-        vTaskDelay(pdMS_TO_TICKS(18000));
+        //every hour send temp on first half hour and humi and second half hour
+        vTaskDelay(pdMS_TO_TICKS(1800000));
         printf("\r\nLeetsgoow\r\n");
         sensor_type = 1; //temp
         vTaskResume(test_task_handle);
-        vTaskDelay(pdMS_TO_TICKS(18000));
-        sensor_type = 2; //temp
+        vTaskDelay(pdMS_TO_TICKS(1800000));
+        sensor_type = 2; //humi
         vTaskResume(test_task_handle);
     }
 }
@@ -371,7 +372,7 @@ int main(void)
     cyhal_gpio_init(CYBSP_SW2, CYHAL_GPIO_DIR_INPUT, CYHAL_GPIO_DRIVE_NONE, false);
     cyhal_gpio_init(CYBSP_D9, CYHAL_GPIO_DIR_INPUT, CYHAL_GPIO_DRIVE_NONE, false);
 
-    cyhal_gpio_register_callback(CYBSP_SW2, interruptHumi, NULL);
+    cyhal_gpio_register_callback(CYBSP_SW2, interruptTemp, NULL);
     cyhal_gpio_enable_event(CYBSP_SW2, CYHAL_GPIO_IRQ_FALL, 5, true);
     cyhal_gpio_register_callback(CYBSP_D9, interruptHumi, NULL);
     cyhal_gpio_enable_event(CYBSP_D9, CYHAL_GPIO_IRQ_FALL, 5, true);
