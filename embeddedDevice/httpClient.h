@@ -12,7 +12,8 @@ bool connected;
 
 char front[25] = "value=";
 char value[6];
-char end[] = "&sensor_id=2";
+char end[] = "&sensor_id=";
+int sensor_type = 0;
 
 #define REQUEST_BODY "value=71&sensor_id=2"
 #define REQUEST_BODY_LENGTH (sizeof(REQUEST_BODY) - 1)

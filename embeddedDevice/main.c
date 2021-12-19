@@ -2,12 +2,31 @@
 #include "DHT_task.h"
 #include "httpClient.h"
 
-void interruptTest(void *handler_arg, cyhal_gpio_irq_event_t event)
+void interruptTemp(void *callback_arg, cyhal_timer_event_t event)
 {
+    sensor_type = 1;
     xTaskResumeFromISR(test_task_handle);
 }
 
-uint8_t sensorType = 0;
+void interruptHumi(void *handler_arg, cyhal_gpio_irq_event_t event)
+{
+    sensor_type = 2;
+    xTaskResumeFromISR(test_task_handle);
+}
+
+void softwareTimer(void *arg)
+{
+    for (;;)
+    {
+        vTaskDelay(pdMS_TO_TICKS(18000));
+        printf("\r\nLeetsgoow\r\n");
+        sensor_type = 1; //temp
+        vTaskResume(test_task_handle);
+        vTaskDelay(pdMS_TO_TICKS(18000));
+        sensor_type = 2; //temp
+        vTaskResume(test_task_handle);
+    }
+}
 
 float Fraction_Convert(uint8_t num)
 {
@@ -227,16 +246,31 @@ void test_Task(void *pvParameters)
                 connected = true;
             }
 
-            if (1)
-                printf("Humidity  =   %.2f\r\n", DHT_reading.humidity);
-            else
-                printf("Temperature  =   %.2f\r\n", DHT_reading.temperature);
-
             char front[30] = "value=";
-            snprintf(value, (sizeof(value) - 1), "%f", DHT_reading.humidity);
-            strcat(front, value);
-            strcat(front, end);
+            if (sensor_type == 1)
+            {
+                printf("Temperature  =   %.2f\r\n", DHT_reading.temperature);
+                snprintf(value, (sizeof(value) - 1), "%f", DHT_reading.temperature);
+                strcat(front, value);
+                strcat(front, end);
+                strcat(front, "1");
+            }
+            else if (sensor_type == 2)
+            {
+                printf("Humidity  =   %.2f\r\n", DHT_reading.humidity);
+                snprintf(value, (sizeof(value) - 1), "%f", DHT_reading.humidity);
+                strcat(front, value);
+                strcat(front, end);
+                strcat(front, "2");
+            }
+            else
+            {
+                printf("\r\nUnknown sensor type\r\n");
+                continue;
+            }
+
             printf("request body: %s\r\n", front);
+            sensor_type = 0;
 
             if (connected)
             {
@@ -312,7 +346,7 @@ void wifi_connect(void *arg)
             cyhal_gpio_write(CYBSP_LED8, CYBSP_LED_STATE_ON);
             if (cy_wcm_is_connected_to_ap())
             {
-                vTaskDelay(5000);
+                vTaskDelay(10000);
                 continue;
             }
             else
@@ -335,18 +369,23 @@ int main(void)
     cyhal_gpio_init(CYBSP_LED_RGB_BLUE, CYHAL_GPIO_DIR_OUTPUT, CYHAL_GPIO_DRIVE_STRONG, CYBSP_LED_STATE_OFF);
     cyhal_gpio_init(DATA_PIN, CYHAL_GPIO_DIR_BIDIRECTIONAL, CYHAL_GPIO_DRIVE_PULLUP, 1);
     cyhal_gpio_init(CYBSP_SW2, CYHAL_GPIO_DIR_INPUT, CYHAL_GPIO_DRIVE_NONE, false);
+    cyhal_gpio_init(CYBSP_D9, CYHAL_GPIO_DIR_INPUT, CYHAL_GPIO_DRIVE_NONE, false);
 
-    cyhal_gpio_register_callback(CYBSP_SW2, interruptTest, NULL);
+    cyhal_gpio_register_callback(CYBSP_SW2, interruptHumi, NULL);
     cyhal_gpio_enable_event(CYBSP_SW2, CYHAL_GPIO_IRQ_FALL, 5, true);
+    cyhal_gpio_register_callback(CYBSP_D9, interruptHumi, NULL);
+    cyhal_gpio_enable_event(CYBSP_D9, CYHAL_GPIO_IRQ_FALL, 5, true);
 
     QueueHandle_t print_queue;
     print_queue = xQueueCreate(1, sizeof(struct readings));
 
-    xTaskCreate(wifi_connect, "wifi_connect_task", 1024, NULL, 1, NULL);
+    xTaskCreate(wifi_connect, "wifi_connect_task", 1024, NULL, 3, NULL);
     xTaskCreate(DHT_Task, "DHT_Task_task", 1024, (void *)print_queue, 2, &DHT_Task_handle);
-    xTaskCreate(test_Task, "printSendHttp_task", HTTP_CLIENT_TASK_STACK_SIZE, (void *)print_queue, 3, &test_task_handle);
+    xTaskCreate(test_Task, "printSendHttp_task", HTTP_CLIENT_TASK_STACK_SIZE, (void *)print_queue, 4, &test_task_handle);
+    xTaskCreate(softwareTimer, "softwareTimer_task", 1024, NULL, 5, NULL);
 
     vTaskStartScheduler();
+    printf("\r\nEnd of main.\r\n");
 }
 
 void disconnect_callback(void *arg)
