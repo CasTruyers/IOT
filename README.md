@@ -23,11 +23,11 @@ DHT11 sensor is used for measuring temperature and humidity. They are made of tw
 
 ## APPLICATION:
 
-**collecting data atm**
+*collecting data atm*
 
 - http://12001510.pxl-ea-ict.be/IOT/project/index.php
 
-### setup
+### setup:
 
 ![setupPicture](mdPictures/setup.jpg)
 
