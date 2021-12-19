@@ -21,13 +21,22 @@ DHT11 sensor is used for measuring temperature and humidity. They are made of tw
 - No more than 1 Hz sampling rate (once every second)
 - click [here](https://www.mouser.com/datasheet/2/758/DHT11-Technical-Data-Sheet-Translated-Version-1143054.pdf) for the datasheet
 
-## APPLICATION:
-
-*collecting data atm*
+## application:
 
 - http://12001510.pxl-ea-ict.be/IOT/project/index.php
 
-### setup:
+## data collection
+*collecting data atm*
+
+To keep continuity between the data, both temperature and humidity is collected on interval. It is also possible to trigger an individual element using a push button event.
+
+**on interval:**
+Every hour temperature and humidity is sent to the database with an offset of 30min between them.
+
+**on event:**
+Temperature can be sent using "SW2" button on the psoc. Also humidity can be sent using a pushbutton event, but there is only 1 on psoc button. So an external button on a developer board is used on the GPIO pins of the psoc.
+
+## setup:
 
 ![setupPicture](mdPictures/setup.jpg)
 
