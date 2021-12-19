@@ -29,7 +29,7 @@ DHT11 sensor is used for measuring temperature and humidity. They are made of tw
 
 ### setup
 
-![Psoc6Picture](mdPictures/setup.png)
+![setupPicture](mdPictures/setup.jpg)
 
 ## TO-DO
 - flexbox
