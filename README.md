@@ -36,7 +36,6 @@ DHT11 sensor is used for measuring temperature and humidity. They are made of tw
 - back button
 - inserting data -> auto close page
 - dataSort
-- connect hardware
 
 ## SOURCES:
 
