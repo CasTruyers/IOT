@@ -14,7 +14,7 @@
 ### SENSOR
 DHT11 sensor is used for measuring temperature and humidity. They are made of two parts, a capacitive humidity sensor and a thermistor. There is also a very basic chip inside that does some analog to digital conversion and spits out a digital signal with the temperature and humidity. Using bitbanging to read the values.
 
-![Psoc6Picture](mdPictures/DHT11.png)
+![DHT11Picture](mdPictures/DHT11.png)
 - 3 to 5V power and I/O
 - Good for 20-80% humidity readings with 5% accuracy
 - Good for 0-50°C temperature readings ±2°C accuracy
@@ -23,7 +23,13 @@ DHT11 sensor is used for measuring temperature and humidity. They are made of tw
 
 ## APPLICATION:
 
+**collecting data atm**
+
 - http://12001510.pxl-ea-ict.be/IOT/project/index.php
+
+### setup
+
+![Psoc6Picture](mdPictures/setup.png)
 
 ## TO-DO
 - flexbox
