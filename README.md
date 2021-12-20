@@ -73,3 +73,4 @@ Temperature can be sent using "SW2" button on the psoc. Also humidity can be sen
 ### Chart.js
 - https://www.youtube.com/watch?v=fqARSwfsV9w&ab_channel=DevEd
 - https://www.youtube.com/watch?v=cREXtrFiJBc&ab_channel=Madsycode
+- https://www.youtube.com/watch?v=H1y66SPBlRI&t=1043s&ab_channel=ExcellenceinExcel
