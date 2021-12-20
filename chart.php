@@ -34,6 +34,7 @@ $timeLabel = trim($timeLabel, ",");
 
 <head>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.1/chart.min.js" integrity="sha512-O2fWHvFel3xjQSi9FyzKXWLTvnom+lOYR/AUEThL/fbP4hv1Lo5LCFCGuTXBRyKC4K4DJldg5kxptkgXAzUpvA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
     <title>Charts</title>
 </head>
 
@@ -74,7 +75,7 @@ $timeLabel = trim($timeLabel, ",");
                         beginAtZero: true
                     },
                     x: {
-
+                        type: 'time'
                     }
                 }
             }
