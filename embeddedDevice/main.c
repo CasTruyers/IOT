@@ -155,7 +155,7 @@ void sampleSensor(void *arg)
         if ((lastHttpValue.humidity > (DHT_reading.humidity + 5)) || (lastHttpValue.humidity < (DHT_reading.humidity - 5)))
         {
             printf("before humi: %f, now humi: %f\r\n", lastHttpValue.humidity, DHT_reading.humidity);
-            vTaskDelay(pdMS_TO_TICKS(3000));
+            vTaskDelay(pdMS_TO_TICKS(5000));
             sensor_type = 2;
             vTaskResume(httpSend_task_handle);
             continue;
