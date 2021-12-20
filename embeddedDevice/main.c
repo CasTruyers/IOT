@@ -146,17 +146,19 @@ void sampleSensor(void *arg)
         DHT_Read(&DHT_reading.humidity, &DHT_reading.temperature);
         if ((lastHttpValue.temperature > (DHT_reading.temperature + 1)) || (lastHttpValue.temperature < (DHT_reading.temperature - 1)))
         {
-            printf("\r\nchanging temp values!!!\r\n");
+            printf("before temp: %f, now temp: %f\r\n", lastHttpValue.temperature, DHT_reading.temperature);
             vTaskDelay(pdMS_TO_TICKS(5000));
             sensor_type = 1;
             vTaskResume(httpSend_task_handle);
+            continue;
         }
-        else if ((lastHttpValue.humidity > (DHT_reading.humidity + 5)) || (lastHttpValue.humidity < (DHT_reading.humidity - 5)))
+        if ((lastHttpValue.humidity > (DHT_reading.humidity + 5)) || (lastHttpValue.humidity < (DHT_reading.humidity - 5)))
         {
-            printf("\r\nchanging humi values!!!\r\n");
-            vTaskDelay(pdMS_TO_TICKS(5000));
+            printf("before humi: %f, now humi: %f\r\n", lastHttpValue.humidity, DHT_reading.humidity);
+            vTaskDelay(pdMS_TO_TICKS(3000));
             sensor_type = 2;
             vTaskResume(httpSend_task_handle);
+            continue;
         }
         else
         {
@@ -220,7 +222,7 @@ void httpSend(void *pvParameters)
         char front[30] = "value=";
         if (sensor_type == 1)
         {
-            snprintf(value, (sizeof(value) - 1), "%f", DHT_reading.temperature);
+            snprintf(value, (sizeof(value) - 1), "%.3f", DHT_reading.temperature);
             strcat(front, value);
             strcat(front, end);
             strcat(front, "1");
@@ -228,7 +230,7 @@ void httpSend(void *pvParameters)
         }
         else if (sensor_type == 2)
         {
-            snprintf(value, (sizeof(value) - 1), "%f", DHT_reading.humidity);
+            snprintf(value, (sizeof(value) - 1), "%.3f", DHT_reading.humidity);
             strcat(front, value);
             strcat(front, end);
             strcat(front, "2");
