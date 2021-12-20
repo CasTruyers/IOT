@@ -43,32 +43,44 @@ $timeLabel = trim($timeLabel, ",");
     </div>
 
     <script>
-        const myChart = new Chart(
-            document.getElementById('myChart'), {
-                type: 'line',
-                data: {
-                    labels: [<?php echo $timeLabel; ?>],
-                    datasets: [{
-                            label: 'Temperature [°C]',
-                            data: [<?php echo $temp; ?>],
-                            backgroundColor: 'transparent',
-                            borderColor: 'rgba(255, 0, 0)',
-                            borderWidth: 1
-                        },
-                        {
-                            label: 'Humidity [%]',
-                            data: [<?php echo $humi; ?>],
-                            backgroundColor: 'transparent',
-                            borderColor: 'rgba(0, 255, 0)',
-                            borderWidth: 1
-                        }
-                    ]
+        //setup
+        const data = {
+            labels: [<?php echo $timeLabel; ?>],
+            datasets: [{
+                    label: 'Temperature [°C]',
+                    data: [<?php echo $temp; ?>],
+                    backgroundColor: 'transparent',
+                    borderColor: 'rgba(255, 0, 0)',
+                    borderWidth: 1
                 },
-                options: {
-                    spanGaps: true
+                {
+                    label: 'Humidity [%]',
+                    data: [<?php echo $humi; ?>],
+                    backgroundColor: 'transparent',
+                    borderColor: 'rgba(0, 255, 0)',
+                    borderWidth: 1
+                }
+            ]
+        };
+
+        //config
+        const config = {
+            type: 'line',
+            data,
+            options: {
+                spanGaps: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    },
+                    x: {
+
+                    }
                 }
             }
-        );
+        }
+        //render
+        const myChart = new Chart(document.getElementById('myChart'), config)
     </script>
 
     <style>
