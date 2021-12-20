@@ -2,16 +2,18 @@
 #include "DHT_task.h"
 #include "httpClient.h"
 
+struct readings lastHttpValue = {0, 0};
+
 void interruptTemp(void *callback_arg, cyhal_timer_event_t event)
 {
     sensor_type = 1;
-    xTaskResumeFromISR(test_task_handle);
+    xTaskResumeFromISR(httpSend_task_handle);
 }
 
 void interruptHumi(void *handler_arg, cyhal_gpio_irq_event_t event)
 {
     sensor_type = 2;
-    xTaskResumeFromISR(test_task_handle);
+    xTaskResumeFromISR(httpSend_task_handle);
 }
 
 void softwareTimer(void *arg)
@@ -22,10 +24,10 @@ void softwareTimer(void *arg)
         vTaskDelay(pdMS_TO_TICKS(1800000));
         printf("\r\nLeetsgoow\r\n");
         sensor_type = 1; //temp
-        vTaskResume(test_task_handle);
+        vTaskResume(httpSend_task_handle);
         vTaskDelay(pdMS_TO_TICKS(1800000));
         sensor_type = 2; //humi
-        vTaskResume(test_task_handle);
+        vTaskResume(httpSend_task_handle);
     }
 }
 
@@ -126,7 +128,6 @@ uint8 DHT_Read(float *humidity, float *temperature)
     {
         *humidity = (int)byteval[0] + Fraction_Convert(byteval[1]);
         *temperature = (int)byteval[2] + Fraction_Convert(byteval[3]);
-
         return SUCCESS;
     }
     else
@@ -136,42 +137,38 @@ uint8 DHT_Read(float *humidity, float *temperature)
     }
 }
 
-void DHT_Task(void *pvParameters)
+void sampleSensor(void *arg)
 {
-    /* Variable to store the queue handle */
-    QueueHandle_t print_queue;
-    print_queue = (QueueHandle_t)pvParameters;
     struct readings DHT_reading = {0, 0};
-
     for (;;)
     {
-        DHT_reading.result_code = DHT_Read(&DHT_reading.humidity, &DHT_reading.temperature);
-
-        if (DHT_reading.result_code == SUCCESS)
-            xQueueSendToBack(print_queue, &DHT_reading, portMAX_DELAY); //If the queue is full, enter blocked state
+        vTaskDelay(pdMS_TO_TICKS(20000));
+        DHT_Read(&DHT_reading.humidity, &DHT_reading.temperature);
+        if ((lastHttpValue.temperature > (DHT_reading.temperature + 1)) || (lastHttpValue.temperature < (DHT_reading.temperature - 1)))
+        {
+            printf("\r\nchanging temp values!!!\r\n");
+            vTaskDelay(pdMS_TO_TICKS(5000));
+            sensor_type = 1;
+            vTaskResume(httpSend_task_handle);
+        }
+        else if ((lastHttpValue.humidity > (DHT_reading.humidity + 5)) || (lastHttpValue.humidity < (DHT_reading.humidity - 5)))
+        {
+            printf("\r\nchanging humi values!!!\r\n");
+            vTaskDelay(pdMS_TO_TICKS(5000));
+            sensor_type = 2;
+            vTaskResume(httpSend_task_handle);
+        }
         else
         {
-            taskEXIT_CRITICAL();
-            /* If the sensor values are not valid, pass the error code along
-			 * with the previous value to the queue. Print_Task reads the
-			 * error value and decides the course of action.*/
-            xQueueSendToBack(print_queue, &DHT_reading, portMAX_DELAY);
+            printf("\r\nNo change\r\n");
         }
-
-        /* As the sensor sampling rate is ~2 seconds. task-delay function is
-		 called for 2 seconds.*/
-        vTaskDelay(pdMS_TO_TICKS(2000));
     }
 }
 
-void test_Task(void *pvParameters)
+void httpSend(void *pvParameters)
 {
     cy_rslt_t result;
-    /* Variable to store the queue handle */
-    QueueHandle_t print_queue;
-    print_queue = (QueueHandle_t)pvParameters;
-    struct readings DHT_reading = {0, 0}; /* Variables to store temperature and humidity values */
-
+    struct readings DHT_reading = {0, 0};
     cy_awsport_server_info_t serverInfo;
     (void)memset(&serverInfo, 0, sizeof(serverInfo));
     serverInfo.host_name = SERVERHOSTNAME;
@@ -198,102 +195,61 @@ void test_Task(void *pvParameters)
 
     result = cy_http_client_init();
     if (result != CY_RSLT_SUCCESS)
-    {
         printf("HTTP Client Library Initialization Failed!\n\r");
-        CY_ASSERT(0);
-    }
-    else
-        printf("HTTP Client Library Initialization Succes!\n\r");
 
     result = cy_http_client_create(NULL, &serverInfo, disconnectCallback, NULL, &clientHandle);
     if (result != CY_RSLT_SUCCESS)
-    {
         printf("HTTP Client Creation Failed!\n\r");
-        CY_ASSERT(0);
-    }
-    else
-        printf("HTTP Client Creation Succes!\n\r");
 
     for (;;)
     {
-        printf("\r\nSuspending Task\r\n");
-        vTaskSuspend(test_task_handle);
-        printf("\r\nResuming Task\r\n");
+        //suspending task and waiting for interrupt to resume
+        vTaskSuspend(httpSend_task_handle);
+        //reading sensorValues
+        DHT_reading.result_code = DHT_Read(&DHT_reading.humidity, &DHT_reading.temperature);
+        result = cy_http_client_write_header(clientHandle, &request, header, num_headers);
+        if (result != CY_RSLT_SUCCESS)
+            printf("HTTP Client Header Write Failed!\n\r");
 
-        //blocking until there is a value
-        xQueueReceive(print_queue, &DHT_reading, portMAX_DELAY);
+        result = cy_http_client_connect(clientHandle, SENDRECEIVETIMEOUT, SENDRECEIVETIMEOUT);
+        if (result != CY_RSLT_SUCCESS)
+            printf("HTTP Client Connection Failed!\n\r");
+        else
+            connected = true;
 
-        /* Print the DHT sensor readings if the values are valid */
-        if (DHT_reading.result_code == SUCCESS)
+        char front[30] = "value=";
+        if (sensor_type == 1)
         {
-            result = cy_http_client_write_header(clientHandle, &request, header, num_headers);
-            if (result != CY_RSLT_SUCCESS)
-            {
-                printf("HTTP Client Header Write Failed!\n\r");
-                CY_ASSERT(0);
-            }
-            else
-                printf("HTTP Client Header Write Succes\n\r");
-
-            result = cy_http_client_connect(clientHandle, SENDRECEIVETIMEOUT, SENDRECEIVETIMEOUT);
-            if (result != CY_RSLT_SUCCESS)
-            {
-                printf("HTTP Client Connection Failed!\n\r");
-                CY_ASSERT(0);
-            }
-            else
-            {
-                printf("Connected to HTTP Server Successfully\n\r");
-                connected = true;
-            }
-
-            char front[30] = "value=";
-            if (sensor_type == 1)
-            {
-                printf("Temperature  =   %.2f\r\n", DHT_reading.temperature);
-                snprintf(value, (sizeof(value) - 1), "%f", DHT_reading.temperature);
-                strcat(front, value);
-                strcat(front, end);
-                strcat(front, "1");
-            }
-            else if (sensor_type == 2)
-            {
-                printf("Humidity  =   %.2f\r\n", DHT_reading.humidity);
-                snprintf(value, (sizeof(value) - 1), "%f", DHT_reading.humidity);
-                strcat(front, value);
-                strcat(front, end);
-                strcat(front, "2");
-            }
-            else
-            {
-                printf("\r\nUnknown sensor type\r\n");
-                continue;
-            }
-
-            printf("request body: %s\r\n", front);
-            sensor_type = 0;
-
-            if (connected)
-            {
-                printf("\r\nSend incoming\r\n");
-                result = cy_http_client_send(clientHandle, &request, front, strlen(front), &response);
-                if (result != CY_RSLT_SUCCESS)
-                    printf("HTTP Client Send Failed!\n\r");
-                else
-                    printf("HTTP Client Send succes\n\r");
-            }
-
-            result = cy_http_client_disconnect(clientHandle);
-            if (result != CY_RSLT_SUCCESS)
-                printf("HTTP Client disconnect Failed!\n\r");
-            else
-                printf("HTTP Client disconnect Succes!\n\r");
+            snprintf(value, (sizeof(value) - 1), "%f", DHT_reading.temperature);
+            strcat(front, value);
+            strcat(front, end);
+            strcat(front, "1");
+            lastHttpValue.temperature = DHT_reading.temperature;
+        }
+        else if (sensor_type == 2)
+        {
+            snprintf(value, (sizeof(value) - 1), "%f", DHT_reading.humidity);
+            strcat(front, value);
+            strcat(front, end);
+            strcat(front, "2");
+            lastHttpValue.humidity = DHT_reading.humidity;
         }
 
-        else if (DHT_reading.result_code == DHT_CONNECTION_ERROR)
-            printf("DHT Sensor Connection Failed\r\n");
-        else
-            printf("Un-known error\r\n");
+        printf("request body: %s\r\n", front);
+        sensor_type = 0;
+
+        if (connected)
+        {
+            result = cy_http_client_send(clientHandle, &request, front, strlen(front), &response);
+            if (result != CY_RSLT_SUCCESS)
+                printf("HTTP Client Send Failed!\n\r");
+            else
+                printf("HTTP Client Send succes\n\r");
+        }
+
+        result = cy_http_client_disconnect(clientHandle);
+        if (result != CY_RSLT_SUCCESS)
+            printf("HTTP Client disconnect Failed!\n\r");
     }
 }
 
@@ -344,20 +300,13 @@ void wifi_connect(void *arg)
     {
         while (1)
         {
-            cyhal_gpio_write(CYBSP_LED8, CYBSP_LED_STATE_ON);
-            if (cy_wcm_is_connected_to_ap())
+            if (cy_wcm_is_connected_to_ap() != true)
             {
-                vTaskDelay(10000);
-                continue;
-            }
-            else
-            {
-                printf("\r\nNot Connected to AP\r\n");
-                cyhal_gpio_write(CYBSP_LED8, CYBSP_LED_STATE_OFF);
+                cyhal_gpio_write(CYBSP_LED8, CYBSP_LED_STATE_ON);
                 break;
             }
+            vTaskDelay(10000);
         }
-        printf("\r\nBreak\r\n");
     }
 }
 
@@ -377,16 +326,12 @@ int main(void)
     cyhal_gpio_register_callback(CYBSP_D9, interruptHumi, NULL);
     cyhal_gpio_enable_event(CYBSP_D9, CYHAL_GPIO_IRQ_FALL, 5, true);
 
-    QueueHandle_t print_queue;
-    print_queue = xQueueCreate(1, sizeof(struct readings));
-
-    xTaskCreate(wifi_connect, "wifi_connect_task", 1024, NULL, 3, NULL);
-    xTaskCreate(DHT_Task, "DHT_Task_task", 1024, (void *)print_queue, 2, &DHT_Task_handle);
-    xTaskCreate(test_Task, "printSendHttp_task", HTTP_CLIENT_TASK_STACK_SIZE, (void *)print_queue, 4, &test_task_handle);
-    xTaskCreate(softwareTimer, "softwareTimer_task", 1024, NULL, 5, NULL);
+    xTaskCreate(wifi_connect, "wifi_connect_task", 1024, NULL, 2, NULL);
+    xTaskCreate(httpSend, "SendHttp_task", HTTP_CLIENT_TASK_STACK_SIZE, NULL, 5, &httpSend_task_handle);
+    xTaskCreate(softwareTimer, "softwareTimer_task", 1024, NULL, 4, NULL);
+    xTaskCreate(sampleSensor, "sampleSensor_task", 1024, NULL, 3, NULL);
 
     vTaskStartScheduler();
-    printf("\r\nEnd of main.\r\n");
 }
 
 void disconnect_callback(void *arg)
