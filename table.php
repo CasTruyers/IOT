@@ -30,7 +30,7 @@ include_once 'includes/connect.php';
                 <th>date</th>
             </tr>
             <?php
-            $sql = "SELECT * FROM samples JOIN sensors ON sensor_id = sample_sensor_id;";
+            $sql = "SELECT * FROM samples JOIN sensors ON sensor_id = sample_sensor_id ORDER BY sample_date ASC;";
             $result = mysqli_query($conn, $sql);
             $resultCheck = mysqli_num_rows($result);
 

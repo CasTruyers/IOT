@@ -7,7 +7,7 @@ $humi = '';
 $temp = '';
 $timeLabel = '';
 
-$sql = "SELECT * FROM samples JOIN sensors ON sensor_id = sample_sensor_id;";
+$sql = "SELECT * FROM samples JOIN sensors ON sensor_id = sample_sensor_id ORDER BY sample_date ASC;";
 $result = mysqli_query($conn, $sql);
 $resultCheck = mysqli_num_rows($result);
 
@@ -40,13 +40,15 @@ $timeLabel = trim($timeLabel, ",");
 
 <body>
     <div class="chart">
-        <canvas id="myChart" canvas>
+        <canvas id="myChart"></canvas>
+        <input oninput="sliceData(this)" type="range" id="slider" min="5" max="1000">
     </div>
 
     <script>
         //setup
+        const dates = [<?php echo $timeLabel; ?>]
         const data = {
-            labels: [<?php echo $timeLabel; ?>],
+            labels: dates,
             datasets: [{
                     label: 'Temperature [°C]',
                     data: [<?php echo $temp; ?>],
@@ -82,6 +84,14 @@ $timeLabel = trim($timeLabel, ",");
         }
         //render
         const myChart = new Chart(document.getElementById('myChart'), config)
+
+        function sliceData(range) {
+            console.log(range.value);
+            const rangeValue = dates.slice(0, range.value);
+            console.log(rangeValue);
+            myChart.config.data.labels = rangeValue;
+            myChart.update();
+        }
     </script>
 
     <style>
