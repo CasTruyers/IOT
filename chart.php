@@ -41,7 +41,7 @@ $timeLabel = trim($timeLabel, ",");
 <body>
     <div class="chart">
         <canvas id="myChart"></canvas>
-        <input oninput="sliceData(this)" type="range" id="slider" min="5" max="1000">
+        <input oninput="sliceData(this)" type="range" id="slider" min="100" max="828" value="828">
     </div>
 
     <script>
