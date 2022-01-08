@@ -43,11 +43,8 @@ Temperature can be sent using "SW2" button on the psoc. Also humidity can be sen
 ![setupPicture](mdPictures/setup.jpg)
 
 ## TO-DO
-- Time relevant chart.js axis
-- flexbox
 - back button
-- inserting data -> auto close page
-- dataSort
+- jquert sort table data
 
 ## SOURCES:
 
