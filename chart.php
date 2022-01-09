@@ -36,30 +36,6 @@ $timeLabel = trim($timeLabel, ",");
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.1/chart.min.js" integrity="sha512-O2fWHvFel3xjQSi9FyzKXWLTvnom+lOYR/AUEThL/fbP4hv1Lo5LCFCGuTXBRyKC4K4DJldg5kxptkgXAzUpvA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
     <title>Charts</title>
-    <style>
-        .chart {
-            margin: auto;
-            width: 70%;
-            border: 3px solid green;
-            padding: 10px;
-            margin-top: 25px;
-        }
-
-        .sliderdiv {
-            margin: auto;
-            width: 10%;
-            border: 2px solid green;
-            padding: 5px;
-
-        }
-
-        /* .slider {
-            margin: auto;
-            width: 50%;
-            border: 3px solid green;
-            padding: 10px;
-        } */
-    </style>
 </head>
 
 <body>
@@ -118,6 +94,23 @@ $timeLabel = trim($timeLabel, ",");
             myChart.update();
         }
     </script>
+    <style>
+        .chart {
+            margin: auto;
+            width: 70%;
+            border: 3px solid green;
+            padding: 10px;
+            margin-top: 25px;
+        }
+
+        .sliderdiv {
+            margin: auto;
+            width: 10%;
+            border: 2px solid green;
+            padding: 5px;
+
+        }
+    </style>
 </body>
 
 </html>
