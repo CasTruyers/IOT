@@ -42,6 +42,10 @@ Temperature can be sent using "SW2" button on the psoc. Also humidity can be sen
 
 ![setupPicture](mdPictures/setup.jpg)
 
+## flowchart:
+
+![setupPicture](mdPictures/flowchart.png)
+
 ## TO-DO
 - back button
 - jquert sort table data
