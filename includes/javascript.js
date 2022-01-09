@@ -1,4 +1,4 @@
-//jquery
+//jquery and AJAX
 $(document).ready(function() {
     $("button").click(function() {
         $("#Table").load("includes/loadPHP.php")

@@ -86,9 +86,7 @@ $timeLabel = trim($timeLabel, ",");
         const myChart = new Chart(document.getElementById('myChart'), config)
 
         function sliceData(range) {
-            console.log(range.value);
             const rangeValue = dates.slice(0, range.value);
-            console.log(rangeValue);
             myChart.config.data.labels = rangeValue;
             myChart.update();
         }
