@@ -20,6 +20,7 @@ include_once 'includes/connect.php';
         <label for="darkmode">DarkMode</label>
         <input type="checkbox" id="darkmode" name="darkmode" onclick="darkMode()">
         <button class="button">UPDATE</button>
+
     </div>
     <div id="Table">
         <table>
