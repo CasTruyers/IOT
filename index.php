@@ -22,8 +22,7 @@
             <li id="chart"><a href="chart.php">chart</a></li>
             <li id="rss"><a href="createRss.php">rss</a></li>
             <li id="json"><a href="createJson.php">json</a></li>
-            <li id="covid"><a href="covid.php">covid</a></li>
-            <li id="ISS"><a href="whereIsTheISS.php">ISS</a></li>
+            <li id="ISS"><a href="iss.php">track iss</a></li>
             <li id="back"><a href="../index.php">back</a></li>
         </ul>
     </div>
