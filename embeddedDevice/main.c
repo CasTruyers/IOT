@@ -2,32 +2,29 @@
 #include "DHT_task.h"
 #include "httpClient.h"
 
-struct readings lastHttpValue = {0, 0};
-
 void interruptTemp(void *callback_arg, cyhal_timer_event_t event)
 {
     sensor_type = 1;
-    xTaskResumeFromISR(httpSend_task_handle);
+    xTaskResumeFromISR(test_task_handle);
 }
 
 void interruptHumi(void *handler_arg, cyhal_gpio_irq_event_t event)
 {
     sensor_type = 2;
-    xTaskResumeFromISR(httpSend_task_handle);
+    xTaskResumeFromISR(test_task_handle);
 }
 
 void softwareTimer(void *arg)
 {
     for (;;)
     {
-        //every hour send temp on first half hour and humi and second half hour
+        //every hour send temp on first half hour and humi on second half hour
         vTaskDelay(pdMS_TO_TICKS(1800000));
-        printf("\r\nLeetsgoow\r\n");
         sensor_type = 1; //temp
-        vTaskResume(httpSend_task_handle);
+        vTaskResume(test_task_handle);
         vTaskDelay(pdMS_TO_TICKS(1800000));
         sensor_type = 2; //humi
-        vTaskResume(httpSend_task_handle);
+        vTaskResume(test_task_handle);
     }
 }
 
@@ -137,40 +134,9 @@ uint8 DHT_Read(float *humidity, float *temperature)
     }
 }
 
-void sampleSensor(void *arg)
-{
-    struct readings DHT_reading = {0, 0};
-    for (;;)
-    {
-        vTaskDelay(pdMS_TO_TICKS(20000));
-        DHT_Read(&DHT_reading.humidity, &DHT_reading.temperature);
-        if ((lastHttpValue.temperature > (DHT_reading.temperature + 1)) || (lastHttpValue.temperature < (DHT_reading.temperature - 1)))
-        {
-            printf("before temp: %f, now temp: %f\r\n", lastHttpValue.temperature, DHT_reading.temperature);
-            vTaskDelay(pdMS_TO_TICKS(5000));
-            sensor_type = 1;
-            vTaskResume(httpSend_task_handle);
-            continue;
-        }
-        if ((lastHttpValue.humidity > (DHT_reading.humidity + 5)) || (lastHttpValue.humidity < (DHT_reading.humidity - 5)))
-        {
-            printf("before humi: %f, now humi: %f\r\n", lastHttpValue.humidity, DHT_reading.humidity);
-            vTaskDelay(pdMS_TO_TICKS(5000));
-            sensor_type = 2;
-            vTaskResume(httpSend_task_handle);
-            continue;
-        }
-        else
-        {
-            printf("\r\nNo change\r\n");
-        }
-    }
-}
-
-void httpSend(void *pvParameters)
+void http_task(void *pvParameters)
 {
     cy_rslt_t result;
-    struct readings DHT_reading = {0, 0};
     cy_awsport_server_info_t serverInfo;
     (void)memset(&serverInfo, 0, sizeof(serverInfo));
     serverInfo.host_name = SERVERHOSTNAME;
@@ -203,12 +169,15 @@ void httpSend(void *pvParameters)
     if (result != CY_RSLT_SUCCESS)
         printf("HTTP Client Creation Failed!\n\r");
 
+    struct readings DHT_reading = {0, 0};
+
     for (;;)
     {
         //suspending task and waiting for interrupt to resume
-        vTaskSuspend(httpSend_task_handle);
+        vTaskSuspend(test_task_handle);
         //reading sensorValues
         DHT_reading.result_code = DHT_Read(&DHT_reading.humidity, &DHT_reading.temperature);
+
         result = cy_http_client_write_header(clientHandle, &request, header, num_headers);
         if (result != CY_RSLT_SUCCESS)
             printf("HTTP Client Header Write Failed!\n\r");
@@ -222,19 +191,17 @@ void httpSend(void *pvParameters)
         char front[30] = "value=";
         if (sensor_type == 1)
         {
-            snprintf(value, (sizeof(value) - 1), "%.3f", DHT_reading.temperature);
+            snprintf(value, (sizeof(value) - 1), "%f", DHT_reading.temperature);
             strcat(front, value);
             strcat(front, end);
             strcat(front, "1");
-            lastHttpValue.temperature = DHT_reading.temperature;
         }
         else if (sensor_type == 2)
         {
-            snprintf(value, (sizeof(value) - 1), "%.3f", DHT_reading.humidity);
+            snprintf(value, (sizeof(value) - 1), "%f", DHT_reading.humidity);
             strcat(front, value);
             strcat(front, end);
             strcat(front, "2");
-            lastHttpValue.humidity = DHT_reading.humidity;
         }
 
         printf("request body: %s\r\n", front);
@@ -318,7 +285,6 @@ int main(void)
 
     cy_retarget_io_init(CYBSP_DEBUG_UART_TX, CYBSP_DEBUG_UART_RX, CY_RETARGET_IO_BAUDRATE);
     cyhal_gpio_init(CYBSP_LED8, CYHAL_GPIO_DIR_OUTPUT, CYHAL_GPIO_DRIVE_STRONG, CYBSP_LED_STATE_OFF);
-    cyhal_gpio_init(CYBSP_LED_RGB_BLUE, CYHAL_GPIO_DIR_OUTPUT, CYHAL_GPIO_DRIVE_STRONG, CYBSP_LED_STATE_OFF);
     cyhal_gpio_init(DATA_PIN, CYHAL_GPIO_DIR_BIDIRECTIONAL, CYHAL_GPIO_DRIVE_PULLUP, 1);
     cyhal_gpio_init(CYBSP_SW2, CYHAL_GPIO_DIR_INPUT, CYHAL_GPIO_DRIVE_NONE, false);
     cyhal_gpio_init(CYBSP_D9, CYHAL_GPIO_DIR_INPUT, CYHAL_GPIO_DRIVE_NONE, false);
@@ -328,10 +294,9 @@ int main(void)
     cyhal_gpio_register_callback(CYBSP_D9, interruptHumi, NULL);
     cyhal_gpio_enable_event(CYBSP_D9, CYHAL_GPIO_IRQ_FALL, 5, true);
 
-    xTaskCreate(wifi_connect, "wifi_connect_task", 1024, NULL, 2, NULL);
-    xTaskCreate(httpSend, "SendHttp_task", HTTP_CLIENT_TASK_STACK_SIZE, NULL, 5, &httpSend_task_handle);
-    xTaskCreate(softwareTimer, "softwareTimer_task", 1024, NULL, 4, NULL);
-    xTaskCreate(sampleSensor, "sampleSensor_task", 1024, NULL, 3, NULL);
+    xTaskCreate(wifi_connect, "wifi_connect_task", 1024, NULL, 3, NULL);
+    xTaskCreate(http_task, "printSendHttp_task", HTTP_CLIENT_TASK_STACK_SIZE, NULL, 4, &test_task_handle);
+    xTaskCreate(softwareTimer, "softwareTimer_task", 1024, NULL, 5, NULL);
 
     vTaskStartScheduler();
 }

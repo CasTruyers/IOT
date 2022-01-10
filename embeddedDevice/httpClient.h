@@ -5,7 +5,7 @@
 
 #define HTTP_CLIENT_TASK_STACK_SIZE (10 * 1024)
 
-TaskHandle_t httpSend_task_handle;
+TaskHandle_t test_task_handle;
 cy_http_client_response_t response;
 void disconnect_callback(void *arg);
 bool connected;
