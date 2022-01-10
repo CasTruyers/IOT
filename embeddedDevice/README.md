@@ -1,1 +1,6 @@
-- there should also be a wifi_config.h file, but it has my password in it so yea not sharing that shi
+## steps on how to compile
+
+- Install the wifi-conenction-manager, retarget-io and freertos library
+- move the FreeRTOSConfig.h, lwipopts.h and mbedtls_user_config from shared lib folder to the project folder
+- Fill in the wifi_config file.
+- then it should compile
