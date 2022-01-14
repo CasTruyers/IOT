@@ -51,6 +51,7 @@ $timeLabel = trim($timeLabel, ",");
         <canvas id="myChart"></canvas>
         <div class="sliderdiv">
             <input class="slider" oninput="sliceData(this)" type="range" id="slider" min="100" max="828" value="828">
+            <input type="checkbox" name="legend" onclick="showLegend(this)" checked> Show Legend
         </div>
     </div>
     <div class="text">scroll down for awesomeness</div>
@@ -111,6 +112,14 @@ $timeLabel = trim($timeLabel, ",");
             myChart.update();
         }
 
+        function showLegend(box) {
+            if (box.checked == true) {
+                myChart.config.options.plugins.legend = true;
+            } else
+                myChart.config.options.plugins.legend = false;
+            myChart.update();
+        }
+
         //map and tiles
         const mymap = L.map('ISSmap').setView([0, 0], 1);
         const tileUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
@@ -162,8 +171,6 @@ $timeLabel = trim($timeLabel, ",");
 
         .sliderdiv {
             margin: auto;
-            width: 10%;
-            border: 2px solid green;
             padding: 5px;
 
         }
